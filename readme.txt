@@ -1,5 +1,9 @@
 README
 
+
+Brian Dahlberg (& Denizhan Pak?), Indiana University 2021
+
+
 MOTIVATION:
     In progress. 
     Time perception isn't representational per se, but counting is. Can we show that a minimally
@@ -8,7 +12,7 @@ MOTIVATION:
     change how we interpret the results?
 
 
-Brian Dahlberg, Indiana University 2021
+DESIGN:
 
 Some experiment design questions:
     1) When assessing fitness and performing time task, should we do self-play or play with others?
@@ -24,3 +28,8 @@ Some experiment design questions:
     5) If we do a singleplayer version of the task, should fitness be assessed scale-free? IE, the
     agents can react in any time-scale they want, as long as they're consistent across varying 
     stimuli?
+
+
+RESULTS:
+Way too early still lol
+
