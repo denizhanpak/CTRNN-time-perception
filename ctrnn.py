@@ -1,13 +1,7 @@
 import numpy as np
-import math
 
 def sigmoid(x):
     return 1/(1+np.exp(-x))
-
-mu = 0.0
-sig = 1.0
-def sigmoid2(x):
-    return 1./(math.sqrt(2.*math.pi)*sig)*np.exp(-np.power((x - mu)/sig, 2.)/2)
 
 class CTRNN():
 
@@ -53,12 +47,3 @@ class CTRNN():
         netinput = (self.Input * self.InputWeight) + np.dot(self.Weight.T, self.Output)
         self.Voltage += dt * (self.invTimeConstant*(-self.Voltage+netinput))
         self.Output = sigmoid(self.Voltage+self.Bias)
-
-##    def stepForLoops(self,dt):
-##        for i in range(self.Size):
-##            netinput = self.Input[i]
-##            for j in range(self.Size):
-##                netinput += self.Weight[j][i]*self.Output[j]
-##            dydt = (1/self.TimeConstant[i])*(-self.Voltage[i]+netinput)
-##            self.Voltage[i] += dt * dydt
-##        self.Output = sigmoid(self.Voltage+self.Bias)
