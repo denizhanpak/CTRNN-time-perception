@@ -31,5 +31,15 @@ Some experiment design questions:
 
 
 RESULTS:
-Way too early still lol
+Our first goalpost was to evolve for a very simple task to make sure there are no foundational bugs. 
+For this first task, fitness is related not to the correct timing of the agent's first action, nor 
+the first action at all - instead, more actions is more fitness. We expected this to be trivial to 
+evolve, and indeed it was (Fig A). 
 
+Our next goalpost is to evolve a simple delay task, where agents get greater fitness the longer they
+can delay their action. Once this is achieved, we should show how agents' ability to accomplish this
+is related to CTRNN network size. 
+
+
+TODO: 
+Start saving data (pickle?) 
