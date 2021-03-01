@@ -1,10 +1,11 @@
 README
 
 
-Brian Dahlberg (& Denizhan Pak?), Indiana University 2021
+Brian Dahlberg & Denizhan Pak - Indiana University 2021
 
 
 MOTIVATION:
+
     In progress. 
     Time perception isn't representational per se, but counting is. Can we show that a minimally
     cognitive agent (a CTRNN) can delay its action by some amount of time based on an input? Is the 
@@ -13,6 +14,11 @@ MOTIVATION:
 
 
 DESIGN:
+
+Brian's version of the fitness function is meant to be scale-agnostic; the agent can respond in
+whatever time-scale it wants so long as it is within the trial Duration. The agent's fitness is 
+based on the ratio consistency of its response times.
+
 
 Some experiment design questions:
     1) When assessing fitness and performing time task, should we do self-play or play with others?
@@ -31,15 +37,19 @@ Some experiment design questions:
 
 
 RESULTS:
+
 Our first goalpost was to evolve for a very simple task to make sure there are no foundational bugs. 
 For this first task, fitness is related not to the correct timing of the agent's first action, nor 
 the first action at all - instead, more actions is more fitness. We expected this to be trivial to 
 evolve, and indeed it was (Fig A). 
 
-Our next goalpost is to evolve a simple delay task, where agents get greater fitness the longer they
-can delay their action. Once this is achieved, we should show how agents' ability to accomplish this
-is related to CTRNN network size. 
+Next we evolved the agents to perform a simple delay task. In this task, agents must delay their
+action by as much as possible on order to attain greater fitness. However, if an agent never takes an 
+action, that is considered 0 fitness. Fig. B demonstrates proof-of-evolvability with toy parameters; 
+Fig. C will be the same but with increased trial duration and population. 
 
 
 TODO: 
-Start saving data (pickle?) 
+
+Once this is achieved, we should show how agents' ability to accomplish this is related to CTRNN 
+network size. 
