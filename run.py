@@ -1,11 +1,12 @@
 from agent import Agent
 from ctrnn import CTRNN
 from mga import Microbial
+from tools import save, read
 import numpy as np
 import matplotlib.pyplot as plt
 
 #TASK PARAMETERS ---------------------------------------------------------------
-Duration = 100    # Duration of simulation, in steps
+Duration = 1000    # Duration of simulation, in steps
 Dt = 0.01
 #N_task_agents = 2 # Number of copies of agent for the time task
 Stimuli = [0.1, 0.2]    # External input/stimuli for the time task
@@ -19,18 +20,19 @@ TimeConstMax = 5.0
 InputWeightRange = 15
 
 #EA PARAMETERS -----------------------------------------------------------------
-Trials = 5   # N of trials of self-play
+Trials = 5   # N of trials per stimulus
 GenotypeLength = Size*Size + Size*3    # Slightly longer because of incoding the input weight vector
-Population = 20
+Population = 100
 RecombProb = 0.5
 MutatProb = 0.1
 Generations = 200
 Tournaments = Generations * Population
 
-def fitnessFunction(genotype):
-    """This version of the fitness function is meant to be scale-agnostic; the agent can respond in
-    whatever time-scale it wants so long as it is within the trial Duration. The agent's fitness is 
-    based on the ratio consistency of its response times."""
+#FITNESS FUNCTIONS -------------------------------------------------------------
+
+def fitnessFunction1(genotype):
+    """First version of the fitness function. This one optimizes simply for most actions taken and is 
+    meant to help debug."""
     
     agent = Agent(genotype, Size, WeightRange, BiasRange, TimeConstMin, TimeConstMax, InputWeightRange, Dt)
     first_actions = np.empty((len(Stimuli), Trials))
@@ -43,21 +45,39 @@ def fitnessFunction(genotype):
                     actions[step] = agent.act()    # Record agent action
                     agent.sense(0)    # Under current experimental design, no stimulus available for rest of 
                     
-    #            first_actions[s, t] = np.where((actions==1))[0][0]    # Record when the agent's first action was   
-    #Calculate ratio of stimuli to each other
-    #Calculate ration of first action/response time to each other
-    #Pass these through some loss function, returning fitness                
+                first_actions[s, t] = np.count_nonzero(actions)
+    return np.average(first_actions)/Duration
+
+
+def fitnessFunction2(genotype):
+    """Second version of the fitness function. This one optimizes for the greatest delay to action."""
+    
+    agent = Agent(genotype, Size, WeightRange, BiasRange, TimeConstMin, TimeConstMax, InputWeightRange, Dt)
+    first_actions = np.zeros((len(Stimuli), Trials))    # Changed to zeros for the sake of fitness eval in the event no action is taken
+    for s in range(len(Stimuli)):    # This loops runs each stimulus condition
+            for t in range(Trials):    # This loops run all trials of task
+                actions = np.empty(Duration)
+                agent.sense(Stimuli[s])    # Initial stimulus
+                for step in range(Duration):    # Runtime
+                    agent.think()
+                    actions[step] = agent.act()    # Record agent action
+                    agent.sense(0)    # Under current experimental design, no stimulus available for rest of 
                     
-                first_actions[s, t] = np.count_nonzero(actions)  # TEMP
-    return np.average(first_actions)/Duration # TEMP
+                acted = np.where(actions==1)
+                if len(acted[0]) > 0:    # The 0 index is because we need the array's first size dimension
+                    first_actions[s, t] = acted[0][0]   # Record when the agent's first action was 
+                else: 
+                    first_actions[s, t] = 0   # Not acting at all is worst fitness
+                    
+    return np.average(first_actions)/Duration
 
 
 # ============================= RUNTIME ========================================
     
 
-test = Microbial(fitnessFunction, Population, GenotypeLength, RecombProb, MutatProb)
+test = Microbial(fitnessFunction2, Population, GenotypeLength, RecombProb, MutatProb)
 test.run(Tournaments)
 test.showFitness()
-
+save('delayAction_N5_P100_G200', test)
 
 
