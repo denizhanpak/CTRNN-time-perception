@@ -14,11 +14,12 @@ class Microbial():
         self.bestHistory = []
 
     def showFitness(self):
-        plt.plot(self.bestHistory)
-        plt.plot(self.avgHistory)
+        plt.plot(self.bestHistory, label="Best")
+        plt.plot(self.avgHistory, label="Average")
         plt.xlabel("Generations")
         plt.ylabel("Fitness")
         plt.title("Best and average fitness")
+        plt.legend()
         plt.show()
 
     def fitStats(self):
