@@ -25,7 +25,7 @@ GenotypeLength = Size*Size + Size*3    # Slightly longer because of incoding the
 Population = 100
 RecombProb = 0.5
 MutatProb = 0.1
-Generations = 200
+Generations = 300
 Tournaments = Generations * Population
 
 #FITNESS FUNCTIONS -------------------------------------------------------------
@@ -78,6 +78,6 @@ def fitnessFunction2(genotype):
 test = Microbial(fitnessFunction2, Population, GenotypeLength, RecombProb, MutatProb)
 test.run(Tournaments)
 test.showFitness()
-save('delayAction_N5_P100_G200', test)
+save('delayAction_N5_P100_G300', test)
 
 
